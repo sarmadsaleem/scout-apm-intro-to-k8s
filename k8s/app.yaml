@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: scout-apm
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-app-deployment
+  namespace: scout-apm
+spec:
+  selector:
+    matchLabels:
+      app: scout-apm-node-app
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: scout-apm-node-app
+    spec:
+      containers:
+        - name: node-app
+          image: docker.io/sarmadsaleem/scout-apm:node-app
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-app-service
+  namespace: scout-apm
+  labels:
+    app: scout-apm-node-app
+spec:
+  selector:
+    app: scout-apm-node-app
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
