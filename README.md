@@ -15,6 +15,10 @@ docker run -p 3000:3000 -it --rm sarmadsaleem/scout-apm:node-app
 # Verify it works
 curl http://localhost:3000
 
+# Let's use Docker Hub for a free public registry: https://hub.docker.com/
+# Once you have an account and a registry, you can login on CLI like so
+docker login --username sarmadsaleem
+
 # Push container to registry
 docker push sarmadsaleem/scout-apm:node-app
 
